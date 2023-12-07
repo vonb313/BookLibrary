@@ -10,9 +10,9 @@ namespace BookLibrary.Model
 {
     internal class BookAuthor
     {
-        [Key, Column(Order = 0)]
+        //Fick ta bort Key attribut från BookID och AuthorID och göra en OnModelCreating Metod i Context som förklarar relationen.
         public int BookID { get; set; }
-        [Key, Column(Order = 1)]
+        
         public int AuthorID { get; set; }
 
         [ForeignKey("BookID")]

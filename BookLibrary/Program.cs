@@ -1,10 +1,17 @@
-﻿namespace BookLibrary
+﻿using BookLibrary.Data;
+
+namespace BookLibrary
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            using (var context = new Context())
+            {
+                var dataAccess = new DataAccess(context);
+
+                dataAccess.CreateFiveRandom();
+            }
         }
     }
 }

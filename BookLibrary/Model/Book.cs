@@ -15,7 +15,7 @@ namespace BookLibrary.Model
         [Required]
         public string Title { get; set; }
         [Required]
-        public string ISBN { get; set; }
+        public int ISBN { get; set; }
         [Required]
         public int PublicationYear { get; set; }
         [Range(1, 10)]
