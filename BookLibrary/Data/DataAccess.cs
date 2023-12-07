@@ -50,5 +50,66 @@ namespace BookLibrary.Data
 
 
         }
+
+        public void AddAuthor(string firstName, string lastName)
+        {
+            var newAuthor = new Author {FirstName = firstName, LastName = lastName };
+
+            _context.Authors.Add(newAuthor);
+            _context.SaveChanges();
+        }
+
+        public void AddBook(string title,int isbn, int publicationYear, int rating, int authorID)
+        {
+            var existingAuthor = _context.Authors.Find(authorID);
+
+            if (existingAuthor == null)
+            {
+                Console.WriteLine("Invalid author ID. Book cannot be added.");
+                return;
+            }
+
+            var newBook = new Book
+            {
+                Title = title,
+                ISBN = isbn,
+                PublicationYear = publicationYear,
+                Rating = rating,
+                IsBorrowed = false,
+                AuthorID = existingAuthor.AuthorID,
+                Author = existingAuthor
+            };
+
+            _context.Books.Add(newBook);
+            _context.SaveChanges();
+
+            Console.WriteLine("Book added successfully!");
+        }
+
+        public void ShowMenu()
+        {
+            Console.WriteLine("Choose an alternative");
+            Console.WriteLine("1. Create five randomised data");
+            Console.WriteLine("2. Insert a Author");
+            Console.WriteLine("3. Insert a new book");
+            Console.Write("Make a choice: ");
+
+        }
+
+        public void ShowAuthors()
+        {
+            var authors = _context.Authors.ToList();
+
+            Console.WriteLine("List of Authors");
+
+            foreach (var author in authors)
+            {
+                Console.WriteLine($"AuthorID: {author.AuthorID} Name: {author.FirstName} {author.LastName}");
+            }
+        }
+
+
+
+
     }
 }
