@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BookLibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Initital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,22 +23,6 @@ namespace BookLibrary.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Authors", x => x.AuthorID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Loans",
-                columns: table => new
-                {
-                    LoanId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookID = table.Column<int>(type: "int", nullable: false),
-                    MemberID = table.Column<int>(type: "int", nullable: false),
-                    LoanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Loans", x => x.LoanId);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,7 +48,7 @@ namespace BookLibrary.Migrations
                     BookID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ISBN = table.Column<int>(type: "int", nullable: false),
                     PublicationYear = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     IsBorrowed = table.Column<bool>(type: "bit", nullable: false),
@@ -82,6 +66,28 @@ namespace BookLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Loans",
+                columns: table => new
+                {
+                    LoanId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookID = table.Column<int>(type: "int", nullable: false),
+                    MemberID = table.Column<int>(type: "int", nullable: false),
+                    LoanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Loans", x => x.LoanId);
+                    table.ForeignKey(
+                        name: "FK_Loans_Members_MemberID",
+                        column: x => x.MemberID,
+                        principalTable: "Members",
+                        principalColumn: "MemberID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BookAuthors",
                 columns: table => new
                 {
@@ -95,14 +101,12 @@ namespace BookLibrary.Migrations
                         name: "FK_BookAuthors_Authors_AuthorID",
                         column: x => x.AuthorID,
                         principalTable: "Authors",
-                        principalColumn: "AuthorID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "AuthorID");
                     table.ForeignKey(
                         name: "FK_BookAuthors_Books_BookID",
                         column: x => x.BookID,
                         principalTable: "Books",
-                        principalColumn: "BookID",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "BookID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -114,6 +118,11 @@ namespace BookLibrary.Migrations
                 name: "IX_Books_AuthorID",
                 table: "Books",
                 column: "AuthorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_MemberID",
+                table: "Loans",
+                column: "MemberID");
         }
 
         /// <inheritdoc />
@@ -126,10 +135,10 @@ namespace BookLibrary.Migrations
                 name: "Loans");
 
             migrationBuilder.DropTable(
-                name: "Members");
+                name: "Books");
 
             migrationBuilder.DropTable(
-                name: "Books");
+                name: "Members");
 
             migrationBuilder.DropTable(
                 name: "Authors");

@@ -23,6 +23,17 @@ namespace BookLibrary.Data
             modelBuilder.Entity<BookAuthor>()
                 .HasKey(ba => new { ba.BookID, ba.AuthorID });
 
+            modelBuilder.Entity<BookAuthor>()
+                .HasOne(ba => ba.Book)
+                .WithMany(b => b.BookAuthors)
+                .HasForeignKey(ba => ba.BookID)
+                .OnDelete(DeleteBehavior.NoAction); // Lägg till detta för att undvika problemet
+
+            modelBuilder.Entity<BookAuthor>()
+                .HasOne(ba => ba.Author)
+                .WithMany(a => a.BookAuthors)
+                .HasForeignKey(ba => ba.AuthorID)
+                .OnDelete(DeleteBehavior.NoAction); // Lägg till detta för att undvika problemet
 
             base.OnModelCreating(modelBuilder);
         }

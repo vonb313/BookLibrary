@@ -35,11 +35,7 @@ namespace Helpers
         string[] _authorfirstnames = "Harry, William, Harold, Tom, J.K, Stephen, Laura, Ian, Agatha, Barbara, Astrid, Richard, Ken, Clive, Lewis, Robin, J.R.R".Split(", ");
         string[] _authorlastnames = "Potter, Shakespeare, Robbins, Clancy, Rowling, King, Trenter, Tolkien, Fleming, Christie, Cartland, Lindgren, Scarry, Follett, Cussller, Carroll, Cook".Split(", ");
 
-        string[] _bookTitles = @"To Kill a Mockingbird, 1984, The Great Gatsby, The Catcher in the Rye, Harry Potter and the Sorcerer's Stone, 
-        The Lord of the Rings, The Girl with the Dragon Tattoo, The Da Vinci Code, The Alchemist, The Hobbit, Pride and Prejudice, The Shining, 
-        Matilda, The Girl on the Train, The Grapes of Wrath, The Old Man and the Sea, The Stand, The Hunger Games, The Chronicles of Narnia, The Road, 
-        The Kite Runner, The Hitchhiker's Guide to the Galaxy, The Godfather, Brave New World, A Tale of Two Cities, Moby-Dick, Crime and Punishment, 
-        Fahrenheit 451, One Hundred Years of Solitude, Gone with the Wind, The Fault in Our Stars, Lord of the Flies".Split(", ");
+        string[] _bookTitles = @"To Kill a Mockingbird, 1984, The Great Gatsby, The Catcher in the Rye, Harry Potter and the Sorcerer's Stone, The Lord of the Rings, The Girl with the Dragon Tattoo, The Da Vinci Code, The Alchemist, The Hobbit, Pride and Prejudice, The Shining, Matilda, The Girl on the Train, The Grapes of Wrath, The Old Man and the Sea, The Stand, The Hunger Games, The Chronicles of Narnia, The Road, The Kite Runner, The Hitchhiker's Guide to the Galaxy, The Godfather, Brave New World, A Tale of Two Cities, Moby-Dick, Crime and Punishment,Fahrenheit 451, One Hundred Years of Solitude, Gone with the Wind, The Fault in Our Stars, Lord of the Flies".Split(", ");
 
         string[] _petnames = "Max, Charlie, Cooper, Milo, Rocky, Wanda, Teddy, Duke, Leo, Max, Simba".Split(", ");
 

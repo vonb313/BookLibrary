@@ -114,6 +114,8 @@ namespace BookLibrary.Migrations
 
                     b.HasKey("LoanId");
 
+                    b.HasIndex("MemberID");
+
                     b.ToTable("Loans");
                 });
 
@@ -160,18 +162,27 @@ namespace BookLibrary.Migrations
                     b.HasOne("BookLibrary.Model.Author", "Author")
                         .WithMany("BookAuthors")
                         .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BookLibrary.Model.Book", "Book")
                         .WithMany("BookAuthors")
                         .HasForeignKey("BookID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Author");
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("BookLibrary.Model.Loan", b =>
+                {
+                    b.HasOne("BookLibrary.Model.Member", null)
+                        .WithMany("Loans")
+                        .HasForeignKey("MemberID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookLibrary.Model.Author", b =>
@@ -182,6 +193,11 @@ namespace BookLibrary.Migrations
             modelBuilder.Entity("BookLibrary.Model.Book", b =>
                 {
                     b.Navigation("BookAuthors");
+                });
+
+            modelBuilder.Entity("BookLibrary.Model.Member", b =>
+                {
+                    b.Navigation("Loans");
                 });
 #pragma warning restore 612, 618
         }

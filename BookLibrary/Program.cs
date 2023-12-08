@@ -1,6 +1,7 @@
 ﻿using BookLibrary.Data;
 using BookLibrary.Model;
 using Helpers;
+using System.Reflection;
 
 namespace BookLibrary
 {
@@ -23,33 +24,38 @@ namespace BookLibrary
                     {
                         case "1":
                             dataAccess.CreateFiveRandom();
-                            Console.WriteLine("You have created five randomised data\n\n\n");
                             break;
 
                         case "2":
-                            Console.Write("Enter authors name: ");
-                            string authorFirstName = Console.ReadLine();
-                            Console.Write("\nEnter authors lastname: ");
-                            string authorLastName = Console.ReadLine();
-
-                            dataAccess.AddAuthor(authorFirstName, authorLastName);
-                            Console.WriteLine("\nAuthor added!");
+                            dataAccess.AddAuthor();
                             break;
 
                         case "3":
-                            Console.Write("Enter book title: ");
-                            string title = Console.ReadLine();
-                            Console.Write("\nEnter publication year: ");
-                            int publicationYear = int.Parse(Console.ReadLine());
-                            Console.Write("\nEnter rating: ");
-                            int rating = int.Parse(Console.ReadLine());
-                            dataAccess.ShowAuthors();
-                            Console.Write("\nEnter author ID: ");
-                            int authorID = int.Parse(Console.ReadLine());
-                            int isbn = rnd.Next(100000,999999);
-                            //Console.WriteLine("Book added to the library");
+                            dataAccess.AddBook();
+                            break;
 
-                            dataAccess.AddBook(title, isbn, publicationYear, rating, authorID);
+                        case "4":
+                            dataAccess.AddMember();
+                            break;
+
+                        case "5":
+                            dataAccess.BorrowBook();
+                            break;
+
+                        case "6":
+                            dataAccess.ShowAllBooks();
+                            break;
+
+                        case "7":
+                            dataAccess.ReturnBook();
+                            break;
+
+                        case "8": //delete authhor
+                            dataAccess.ShowAuthors();
+                            Console.Write("Enter the AuthorID you want to remove.");
+                            int authorIdDelete = int.Parse(Console.ReadLine());
+                            
+                            dataAccess.DeleteAuthor(authorIdDelete);
                             break;
 
                     }

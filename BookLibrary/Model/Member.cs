@@ -20,5 +20,7 @@ namespace BookLibrary.Model
         [Required]
         public int LoanCardPIN { get; set; }
 
+        public virtual ICollection<Loan> Loans { get; set; } = new List<Loan>();
+
     }
 }
