@@ -10,7 +10,6 @@ namespace BookLibrary.Model
 {
     internal class BookAuthor
     {
-        //Fick ta bort Key attribut från BookID och AuthorID och göra en OnModelCreating Metod i Context som förklarar relationen.
         public int BookID { get; set; }
 
         public int AuthorID { get; set; }

@@ -27,6 +27,7 @@ namespace BookLibrary.Model
         public virtual Author Author { get; set; }
 
         public virtual ICollection<BookAuthor> BookAuthors { get; set; }
+        public virtual ICollection<Loan> Loans { get; set; }
 
     }
 }

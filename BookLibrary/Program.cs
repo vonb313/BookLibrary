@@ -9,6 +9,7 @@ namespace BookLibrary
     {
         static void Main(string[] args)
         {
+
             using (var context = new Context())
             {
                 var dataAccess = new DataAccess(context);
@@ -50,14 +51,29 @@ namespace BookLibrary
                             dataAccess.ReturnBook();
                             break;
 
-                        case "8": //delete authhor
-                            dataAccess.ShowAuthors();
-                            Console.Write("Enter the AuthorID you want to remove.");
-                            int authorIdDelete = int.Parse(Console.ReadLine());
-                            
-                            dataAccess.DeleteAuthor(authorIdDelete);
-                            break;
+                        case "8":
+                            Console.WriteLine("What do you want to delete?");
+                            Console.WriteLine("1. Delete Book.");
+                            Console.WriteLine("2. Delete Author.");
+                            Console.WriteLine("3. Delete Member.");
+                            Console.Write("Enter: ");
 
+                            string deletechoice = Console.ReadLine();
+                            switch (deletechoice)
+                            {
+                                case "1":
+                                    dataAccess.DeleteBook();
+                                break;
+
+                                case "2":
+                                        dataAccess.DeleteAuthor();
+                                break;
+
+                                case "3":
+                                    dataAccess.DeleteMember();
+                                break;    
+                            }
+                            break;
                     }
                 }
 

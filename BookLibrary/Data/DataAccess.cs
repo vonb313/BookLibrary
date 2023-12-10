@@ -143,7 +143,7 @@ namespace BookLibrary.Data
             _context.SaveChanges();
 
             Console.WriteLine($"Member created. Welcome to the library {firstName} {lastName}");
-            Console.WriteLine($"\nYour login information is your memberId: {loanCard} and your chosen PIN code: {pinCode}\n");
+            Console.WriteLine($"\nYour login information is your loancardID: {loanCard} and your chosen PIN code: {pinCode}\n");
         }
 
         public void BorrowBook()
@@ -183,7 +183,7 @@ namespace BookLibrary.Data
                     _context.Loans.Add(loan);
                     _context.SaveChanges();
 
-                    Console.WriteLine($"Book: {bookToBorrow.Title} has been borrowed by {member.FirstName} {member.LastName}");
+                    Console.WriteLine($"Book: {bookToBorrow.Title} has been borrowed by {member.FirstName} {member.LastName}\n\n");
                 }
                 else
                 {
@@ -212,7 +212,7 @@ namespace BookLibrary.Data
                 Console.WriteLine($"\nWelcome, {member.FirstName} {member.LastName}!\n");
                 Thread.Sleep(3000);
 
-                Console.WriteLine($"Lånade böcker: \n");
+                Console.WriteLine($"Borrowed Books: \n");
                 ShowMemberLoans(member.MemberID);
 
                 Console.Write("Enter the Loan ID of the book you want to return: ");
@@ -250,9 +250,13 @@ namespace BookLibrary.Data
             }
         }
 
-        public void DeleteAuthor(int authorId)
+        public void DeleteAuthor()
         {
-            var authorToDelete = _context.Authors.Include(a => a.BookAuthors).FirstOrDefault(a => a.AuthorID == authorId);
+            ShowAuthors();
+            Console.Write("Enter the AuthorID you want to remove: ");
+            int deleteAuthor = int.Parse(Console.ReadLine());
+
+            var authorToDelete = _context.Authors.Include(a => a.BookAuthors).FirstOrDefault(a => a.AuthorID == deleteAuthor);
 
             if (authorToDelete != null)
             {
@@ -267,11 +271,81 @@ namespace BookLibrary.Data
                 _context.Authors.Remove(authorToDelete);
                 _context.SaveChanges();
 
-                Console.WriteLine($"Author with ID {authorId} and associated books have been deleted.\n");
+                Console.Clear();
+                Console.WriteLine($"Author with ID {deleteAuthor} and associated books have been deleted.\n");
             }
             else
             {
-                Console.WriteLine($"Author with ID {authorId} not found.");
+                Console.WriteLine($"Author with ID {deleteAuthor} not found.\n");
+            }
+        }
+
+        public void DeleteBook()
+        {
+            ShowAllBooks();
+            Console.Write("Enter the BookID you want to remove: ");
+            int deleteBook = int.Parse(Console.ReadLine());
+
+            var bookToDelete = _context.Books.Include(b => b.BookAuthors).Include(b => b.Loans).FirstOrDefault(b => b.BookID == deleteBook);
+
+            if(bookToDelete != null)
+            {
+                foreach (var loan in bookToDelete.Loans)
+                {
+                    _context.Remove(loan);
+                }
+
+                foreach (var bookAuthor in bookToDelete.BookAuthors)
+                {
+                    var author = _context.Authors.FirstOrDefault(a => a.AuthorID == bookAuthor.AuthorID);
+                    if(author != null)
+                    {
+                        author.BookAuthors.Remove(bookAuthor);
+                    }
+                }
+
+                _context.Books.Remove(bookToDelete);
+                _context.SaveChanges();
+
+                Console.Clear();
+                Console.WriteLine($"Book with ID {deleteBook} and associated loans have been deleted.\n");
+            }
+            else
+            {
+                Console.WriteLine($"Book with ID {deleteBook} not found.\n");
+            }
+        }
+
+        public void DeleteMember()
+        {
+            ShowMembers();
+            Console.Write("Enter the memberID you want to remove: ");
+            int deleteMember = int.Parse(Console.ReadLine());
+
+            var memberToDelete = _context.Members.Include(m => m.Loans).FirstOrDefault(m => m.MemberID == deleteMember);
+
+            if (memberToDelete != null)
+            {
+                foreach (var loan in memberToDelete.Loans)
+                {
+                    var book = _context.Books.FirstOrDefault(b => b.BookID == loan.BookID);
+                    if (book != null)
+                    {
+                        book.IsBorrowed = false;
+                    }
+
+                    _context.Loans.Remove(loan);
+                }
+
+                _context.Members.Remove(memberToDelete);
+                _context.SaveChanges();
+
+                Console.Clear();
+                Console.WriteLine($"Member with ID {deleteMember} and associated loans have been deleted.\n");
+            }
+            else
+            {
+                Console.WriteLine($"Member with ID {deleteMember} not found.\n");
             }
         }
 
@@ -313,7 +387,7 @@ namespace BookLibrary.Data
             Console.WriteLine("5. Loan a book");
             Console.WriteLine("6. Show all books");
             Console.WriteLine("7. Return book");
-            Console.WriteLine("8. Delete a author");
+            Console.WriteLine("8. Delete data");
             Console.Write("Make a choice: ");
 
         }
@@ -327,6 +401,9 @@ namespace BookLibrary.Data
             foreach (var author in authors)
             {
                 Console.WriteLine($"AuthorID: {author.AuthorID} Name: {author.FirstName} {author.LastName}");
+                Console.WriteLine($"AuthorID: {author.AuthorID}");
+                Console.WriteLine($"Name: {author.FirstName} {author.LastName}");
+                Console.WriteLine("------------------------");
             }
         }
 
@@ -338,7 +415,10 @@ namespace BookLibrary.Data
 
             foreach(var member in members)
             {
-                Console.WriteLine($"MemberID: {member.MemberID} Loancard: {member.LoanCard} Name: {member.FirstName} {member.LastName}");
+                Console.WriteLine($"Member ID: {member.MemberID}");
+                Console.WriteLine($"Loancard: {member.LoanCard}");
+                Console.WriteLine($"Name: {member.FirstName} {member.LastName}");
+                Console.WriteLine("------------------------");
             }
         }
 
@@ -374,6 +454,7 @@ namespace BookLibrary.Data
                 Console.WriteLine($"Author: {book.Author.FirstName} {book.Author.LastName}");
                 Console.WriteLine("------------------------");
             }
+            Console.WriteLine();
 
             return allBooks;
         }

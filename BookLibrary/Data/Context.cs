@@ -27,13 +27,13 @@ namespace BookLibrary.Data
                 .HasOne(ba => ba.Book)
                 .WithMany(b => b.BookAuthors)
                 .HasForeignKey(ba => ba.BookID)
-                .OnDelete(DeleteBehavior.NoAction); // Lägg till detta för att undvika problemet
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<BookAuthor>()
                 .HasOne(ba => ba.Author)
                 .WithMany(a => a.BookAuthors)
                 .HasForeignKey(ba => ba.AuthorID)
-                .OnDelete(DeleteBehavior.NoAction); // Lägg till detta för att undvika problemet
+                .OnDelete(DeleteBehavior.NoAction); 
 
             base.OnModelCreating(modelBuilder);
         }
